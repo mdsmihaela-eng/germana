@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercițiu de traducere A1–A2 – Mihaela Preda</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f0e8;
+    color: #2d2d2d;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: #2d5a3d;
+    color: white;
+    padding: 18px 24px 14px;
+  }
+  .header .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a8d5b5;
+    margin-bottom: 4px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+  .header .author { font-size: 13px; color: #c8e6d0; }
+
+  .container { max-width: 700px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .instructions {
+    background: #fef9ec;
+    border: 1px solid #e8d98a;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: #4a3f1a;
+  }
+  .instructions span.ro { color: #c0392b; font-weight: 600; }
+  .instructions span.de { color: #2d5a3d; font-weight: 600; }
+  .instructions span.btn-ref {
+    background: #2d5a3d;
+    color: white;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .speed-box {
+    background: #fef9ec;
+    border: 1px solid #e8d98a;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #4a3f1a;
+  }
+  .speed-label { font-weight: 600; }
+  .speed-btn {
+    padding: 5px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #c8b86a;
+    background: transparent;
+    color: #4a3f1a;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .speed-btn.active {
+    background: #e8a020;
+    border-color: #e8a020;
+    color: white;
+    font-weight: 600;
+  }
+
+  .show-all-btn {
+    border: 1.5px solid #2d5a3d;
+    background: transparent;
+    color: #2d5a3d;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .show-all-btn:hover { background: #eaf5ee; }
+
+  .exercise-list { display: flex; flex-direction: column; gap: 0; }
+
+  .exercise-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #d8cdb0;
+  }
+  .exercise-item:last-child { border-bottom: none; }
+
+  .ro-sentence {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: #c0701a;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+  }
+  .toggle-btn:hover { color: #8a4a0a; }
+
+  .de-answer {
+    display: none;
+    margin-top: 8px;
+    background: #2d5a3d;
+    color: white;
+    border-radius: 8px;
+    padding: 12px 16px 12px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .de-answer.visible { display: flex; }
+
+  .de-text { flex: 1; }
+
+  .note {
+    font-size: 12px;
+    color: #a8d5b5;
+    margin-top: 4px;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .audio-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    color: white;
+    font-size: 16px;
+  }
+  .audio-btn:hover { background: rgba(255,255,255,0.28); }
+  .audio-btn.playing { background: rgba(255,255,255,0.35); }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7a6a40;
+    margin: 24px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #d8cdb0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="tag">Deutsch, meine Sprache</div>
+  <h1>Exercițiu de traducere A1–A2</h1>
+  <div class="author">Mihaela Preda</div>
+</div>
+
+<div class="container">
+
+  <div class="instructions">
+    1. Citește propoziția în <span class="ro">română</span>.<br>
+    2. Încearcă să o traduci în <span class="de">germană</span>.<br>
+    3. Apasă <span class="btn-ref">Arată germana</span> pentru a verifica.<br>
+    4. Apasă ▶ pentru a auzi pronunția corectă.
+  </div>
+
+  <div class="speed-box">
+    <span class="speed-label">Viteză sonor:</span>
+    <button class="speed-btn active" onclick="setSpeed(0.7, this)">Lent</button>
+    <button class="speed-btn" onclick="setSpeed(1.0, this)">Normal</button>
+    <button class="speed-btn" onclick="setSpeed(1.3, this)">Rapid</button>
+  </div>
+
+  <button class="show-all-btn" onclick="toggleAll()">
+    <span>👁</span> <span id="showAllLabel">Arată toate traducerile</span>
+  </button>
+
+  <div class="exercise-list" id="exerciseList"></div>
+
+</div>
+
+<script>
+const exercises = [
+  // ── rühren / berühren
+  { section: "rühren / berühren", ro: null, de: null },
+  { ro: "Mama amestecă supa.", de: "Mama rührt die Suppe." },
+  { ro: "Amesteci sosul, te rog?", de: "Rührst du bitte die Soße?" },
+  { ro: "Nu atinge tigaia fierbinte!", de: "Berühre die heiße Pfanne nicht!" },
+
+
+
+  // ── dämpfen / der Dampf
+  { section: "dämpfen / der Dampf", ro: null, de: null },
+  { ro: "Gătesc broccoli la abur.", de: "Ich dämpfe den Brokkoli." },
+  { ro: "Aburul iese din ceașcă.", de: "Der Dampf kommt aus der Tasse." },
+  { ro: "Ea gătește peștele la abur.", de: "Sie dämpft den Fisch." },
+
+
+  // ── helfen
+  { section: "helfen — a ajuta", ro: null, de: null },
+  { ro: "Îl ajut pe tata în bucătărie.", de: "Ich helfe Papa in der Küche." },
+  { ro: "Ajuți la curățenie?", de: "Hilfst du beim Aufräumen?" },
+  { ro: "Sora mea mă ajută mereu.", de: "Meine Schwester hilft mir immer." },
+  { ro: "Vă ajutăm cu plăcere.", de: "Wir helfen euch gerne." },
+  { ro: "Ei ajută în fiecare zi.", de: "Sie helfen jeden Tag." },
+
+  // ── öffnen / offen
+  { section: "öffnen / offen", ro: null, de: null },
+  { ro: "Deschide fereastra, te rog.", de: "Öffne bitte das Fenster." },
+  { ro: "Frigiderul este deschis.", de: "Der Kühlschrank ist offen." },
+  { ro: "El deschide ușa.", de: "Er öffnet die Tür." },
+  { ro: "Deschid cuptorul cu grijă.", de: "Ich öffne den Ofen vorsichtig." },
+  { ro: "Magazinul este deschis.", de: "Das Geschäft ist offen." },
+
+  // ── würzen / das Gewürz
+  { section: "würzen / das Gewürz", ro: null, de: null },
+  { ro: "Condimentez supa cu sare și piper.", de: "Ich würze die Suppe mit Salz und Pfeffer." },
+  { ro: "Ce condiment folosești?", de: "Welches Gewürz benutzt du?" },
+
+  { ro: "Condimentele sunt pe masă.", de: "Die Gewürze sind auf dem Tisch." },
+
+  // ── vorbereiten / bereiten / bereit
+  { section: "vorbereiten / bereiten / bereit", ro: null, de: null },
+  { ro: "Pregătesc micul dejun.", de: "Ich bereite das Frühstück vor." },
+  { ro: "Ești gata?", de: "Bist du bereit?" },
+  { ro: "Ea pregătește lecția pentru mâine.", de: "Sie bereitet die Lektion für morgen vor." },
+  { ro: "Ne-am pregătit pentru vacanță.", de: "Wir haben uns für den Urlaub vorbereitet." },
+  { ro: "El este mereu pregătit.", de: "Er ist immer bereit." },
+
+  // ── dann / danach / nachher
+  { section: "dann / danach / nachher", ro: null, de: null },
+  { ro: "Mai întâi mă spăl, apoi mănânc.", de: "Ich wasche mich, dann esse ich." },
+  { ro: "Gătesc, după aceea spăl vasele.", de: "Ich koche, danach wasche ich das Geschirr." },
+
+  { ro: "Iau masa, pe urmă mă odihnesc.", de: "Ich esse, nachher ruhe ich mich aus." },
+
+  // ── die Pfanne / der Ofen / die Küche
+  { section: "die Pfanne / der Ofen / die Küche", ro: null, de: null },
+  { ro: "Tigaia este fierbinte.", de: "Die Pfanne ist heiß." },
+
+  { ro: "Cuptorul este pornit.", de: "Der Ofen ist an." },
+  { ro: "Bucătăria miroase frumos.", de: "Die Küche riecht schön." },
+
+];
+
+let speed = 0.7;
+let allVisible = false;
+
+function setSpeed(s, btn) {
+  speed = s;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function speak(text, btn) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'de-DE';
+  utter.rate = speed;
+
+  const voices = window.speechSynthesis.getVoices();
+  const deVoice = voices.find(v => v.lang.startsWith('de') && v.name.toLowerCase().includes('google'))
+    || voices.find(v => v.lang.startsWith('de'));
+  if (deVoice) utter.voice = deVoice;
+
+  btn.classList.add('playing');
+  utter.onend = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(utter);
+}
+
+function toggleAnswer(id) {
+  const ans = document.getElementById('ans-' + id);
+  const btn = document.getElementById('btn-' + id);
+  const visible = ans.classList.contains('visible');
+  ans.classList.toggle('visible', !visible);
+  btn.textContent = visible ? 'Arată germana' : 'Ascunde germana';
+}
+
+function toggleAll() {
+  allVisible = !allVisible;
+  document.querySelectorAll('.de-answer').forEach((el, i) => {
+    el.classList.toggle('visible', allVisible);
+  });
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.textContent = allVisible ? 'Ascunde germana' : 'Arată germana';
+  });
+  document.getElementById('showAllLabel').textContent = allVisible ? 'Ascunde toate traducerile' : 'Arată toate traducerile';
+}
+
+function buildList() {
+  const list = document.getElementById('exerciseList');
+  let idx = 0;
+  exercises.forEach((ex, i) => {
+    if (ex.section) {
+      const div = document.createElement('div');
+      div.className = 'section-title';
+      div.textContent = ex.section;
+      list.appendChild(div);
+      return;
+    }
+    const id = idx++;
+    const item = document.createElement('div');
+    item.className = 'exercise-item';
+    item.innerHTML = `
+      <div class="ro-sentence">${ex.ro}</div>
+      <button class="toggle-btn" id="btn-${id}" onclick="toggleAnswer(${id})">Arată germana</button>
+      <div class="de-answer" id="ans-${id}">
+        <div class="de-text">
+          ${ex.de}
+        </div>
+        <button class="audio-btn" onclick="speak('${ex.de.replace(/'/g,"\\'")}', this)" title="Ascultă pronunția">▶</button>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+buildList();
+</script>
+</body>
+</html>
